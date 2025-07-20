@@ -64,3 +64,18 @@ This project implements and evaluates a trading strategy optimization framework 
 │ (Return, Calmar, Sharpe)│
 └─────────────────────────┘
 ```
+
+### **方法一：Profit_Price_based_Trading_Strategy_Construction_Algorithm_(PPTS) .ipynb**
+
+論文3-3虛擬碼
+Profit-Price based Trading Strategy Construction Algorithm (PPTS)實際程式
+
+### **20241203基因演算法.ipynb**
+
+論文3-3虛擬碼
+GA-based Profit-Price based Trading Strategy Optimization Algorithm (GAPPTS)實際程式
+
+
+
+
+
