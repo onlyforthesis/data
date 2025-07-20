@@ -78,3 +78,7 @@ GA-based Profit-Price based Trading Strategy Optimization Algorithm (GAPPTS)實�
 ### **update_stock.ipynb**
 
 4.4 不同行業股票預測效能比較(塞入不同股票代號)
+
+
+### **演算法表現比較**
+4.5 與不同方法預測股票成效比較分析
