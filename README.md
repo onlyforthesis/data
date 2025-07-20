@@ -26,7 +26,6 @@ This project implements and evaluates a trading strategy optimization framework 
 ✔ **GAPPTS 參數優化**  
 　利用 **遺傳演算法** 搜尋最適化參數組合：  
 　- **n_bins**：價格分區數  
-　- **window**：滾動視窗長度  
 　- **profit_threshold**：利潤門檻  
 
 ✔ **多目標最佳化 (Return & Calmar Ratio)**  
