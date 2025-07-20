@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>最佳化結果</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+            padding: 16px;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0 0 16px 0;
+        }
+        
+        .chart-container {
+            height: 400px;
+            margin-bottom: 24px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            font-weight: 600;
+        }
+        
+        .text-right {
+            text-align: right;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2 class="card-title">最佳適應度排名</h2>
+        <div class="chart-container">
+            <canvas id="fitnessChart"></canvas>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="card-title">參數比較表</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>股票</th>
+                        <th class="text-right">適應度</th>
+                        <th class="text-right">區間個數</th>
+                        <th class="text-right">持有期間</th>
+                        <th class="text-right">目標獲利</th>
+                        <th class="text-right">進場係數</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const data = [
+            {
+                stock: '2330',
+                name: '台積電',
+                fitness: 0.6665,
+                params: {
+                    intervals: 19,
+                    holdTime: 26,
+                    targetProfit: 33.48,
+                    alpha: 0.83
+                }
+            },
+            {
+                stock: '2317',
+                name: '鴻海',
+                fitness: 0.5727,
+                params: {
+                    intervals: 7,
+                    holdTime: 11,
+                    targetProfit: 54.48,
+                    alpha: 0.37
+                }
+            },
+            {
+                stock: '2454',
+                name: '聯發科',
+                fitness: 0.6994,
+                params: {
+                    intervals: 5,
+                    holdTime: 22,
+                    targetProfit: 3.84,
+                    alpha: 0.53
+                }
+            },
+            {
+                stock: '2412',
+                name: '中華電',
+                fitness: 0.5410,
+                params: {
+                    intervals: 7,
+                    holdTime: 28,
+                    targetProfit: 44.31,
+                    alpha: 0.45
+                }
+            },
+            {
+                stock: '2308',
+                name: '台達電',
+                fitness: 0.6530,
+                params: {
+                    intervals: 14,
+                    holdTime: 29,
+                    targetProfit: 3.08,
+                    alpha: 0.86
+                }
+            },
+            {
+                stock: '2881',
+                name: '富邦金',
+                fitness: 0.6190,
+                params: {
+                    intervals: 11,
+                    holdTime: 13,
+                    targetProfit: 98.49,
+                    alpha: 0.46
+                }
+            },
+            {
+                stock: '2882',
+                name: '國泰金',
+                fitness: 0.6038,
+                params: {
+                    intervals: 20,
+                    holdTime: 18,
+                    targetProfit: 11.58,
+                    alpha: 0.51
+                }
+            },
+            {
+                stock: '1301',
+                name: '台塑',
+                fitness: 0.5968,
+                params: {
+                    intervals: 17,
+                    holdTime: 19,
+                    targetProfit: 46.29,
+                    alpha: 0.40
+                }
+            },
+            {
+                stock: '2303',
+                name: '聯電',
+                fitness: 0.7058,
+                params: {
+                    intervals: 20,
+                    holdTime: 25,
+                    targetProfit: 4.57,
+                    alpha: 0.54
+                }
+            },
+            {
+                stock: '3711',
+                name: '日月光投控',
+                fitness: 0.6634,
+                params: {
+                    intervals: 16,
+                    holdTime: 19,
+                    targetProfit: 11.52,
+                    alpha: 0.53
+                }
+            }
+        ].sort((a, b) => b.fitness - a.fitness);
+
+        // 渲染表格
+        const tableBody = document.getElementById('tableBody');
+        data.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.name} (${item.stock})</td>
+                <td class="text-right">${item.fitness.toFixed(4)}</td>
+                <td class="text-right">${item.params.intervals}</td>
+                <td class="text-right">${item.params.holdTime}</td>
+                <td class="text-right">${item.params.targetProfit.toFixed(2)}%</td>
+                <td class="text-right">${item.params.alpha.toFixed(2)}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        // 繪製圖表
+        const ctx = document.getElementById('fitnessChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.map(item => item.name),
+                datasets: [{
+                    label: '適應度',
+                    data: data.map(item => item.fitness),
+                    backgroundColor: '#8884d8',
+                    borderColor: '#8884d8',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        min: 0.5,
+                        max: 0.8
+                    },
+                    x: {
+                        ticks: {
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
