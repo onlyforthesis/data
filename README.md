@@ -73,13 +73,12 @@ Profit-Price based Trading Strategy Construction Algorithm (PPTS)實際程式
 
 論文3-3虛擬碼
 GA-based Profit-Price based Trading Strategy Optimization Algorithm (GAPPTS)實際程式
-
+### **4.1.實驗資料描述與環境設定.ipynb**
+4.1.實驗資料描述與環境設定
 ### **update_stock.ipynb**
-
 4.4 不同行業股票預測效能比較(塞入不同股票代號)
-
-
 ### **演算法表現比較.ipynb**
 ### **表 3.7 至表 3.20 .ipynb**
 ### **表 4.1 演算法表現比較.ipynb**
 4.5 與不同方法預測股票成效比較分析
+
